@@ -12,7 +12,7 @@
   "dependencies": {
     "express": "^4.19.2",
     "socket.io": "^4.7.5",
-    "tiktok-live-connector": "^1.2.11",
-    "youtube-chat": "^2.2.2"
+    "tiktok-live-connector": "^2.4.4",
+    "youtube-chat": "^2.2.0"
   }
 }

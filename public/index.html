@@ -5,11 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Overlay Chat</title>
 <style>
-  :root {
-    --bg-bubble: rgba(15, 15, 20, 0.82);
-    --text-main: #f5f5f7;
-    --text-username: #ffd23f;
-  }
   * { box-sizing: border-box; }
   html, body {
     margin: 0; padding: 0; background: transparent;
@@ -26,18 +21,6 @@
     gap: 10px;
   }
   .chat-item {
-    display: flex;
-    align-items: center;
-    background: var(--bg-bubble);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-    color: var(--text-main);
-    padding: 10px 14px;
-    border-radius: 12px;
-    width: max-content;
-    max-width: 92%;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.35);
-    border: 1px solid rgba(255,255,255,0.06);
     animation: slideIn 0.28s ease-out;
     opacity: 1;
     transition: opacity 0.6s ease, transform 0.6s ease;
@@ -46,35 +29,105 @@
     opacity: 0;
     transform: translateY(-6px);
   }
-  .badge {
-    font-weight: 700;
-    font-size: 10px;
-    letter-spacing: 0.4px;
-    padding: 4px 7px;
-    border-radius: 6px;
-    margin-right: 10px;
-    text-transform: uppercase;
-    color: #fff;
-    flex-shrink: 0;
-  }
-  .badge.tiktok { background: linear-gradient(135deg, #ff0050, #00f2ea); }
-  .badge.youtube { background: #ff0000; }
-  .username {
-    font-weight: 700;
-    color: var(--text-username);
-    margin-right: 6px;
-    flex-shrink: 0;
-  }
-  .message {
-    color: var(--text-main);
-    word-break: break-word;
-    line-height: 1.35;
-    font-size: 15px;
-  }
   @keyframes slideIn {
     from { opacity: 0; transform: translateY(14px); }
     to { opacity: 1; transform: translateY(0); }
   }
+
+  /* ============ THEME: default (dark glass bubble) ============ */
+  body.theme-default #chat-container { gap: 10px; }
+  body.theme-default .chat-item {
+    display: flex;
+    align-items: center;
+    background: rgba(15, 15, 20, 0.82);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    color: #f5f5f7;
+    padding: 10px 14px;
+    border-radius: 12px;
+    width: max-content;
+    max-width: 92%;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.35);
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+  body.theme-default .badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin-right: 8px;
+    flex-shrink: 0;
+    color: #fff;
+  }
+  body.theme-default .badge svg { width: 12px; height: 12px; display: block; }
+  body.theme-default .badge.tiktok { background: linear-gradient(135deg, #ff0050, #00f2ea); }
+  body.theme-default .badge.youtube { background: #ff0000; }
+  body.theme-default .username { font-weight: 700; color: #ffd23f; margin-right: 6px; flex-shrink: 0; }
+  body.theme-default .message { color: #f5f5f7; word-break: break-word; line-height: 1.35; font-size: 15px; }
+
+  /* ============ THEME: twitch (flat, compact, colored names) ============ */
+  body.theme-twitch #chat-container { gap: 4px; padding: 10px 14px; }
+  body.theme-twitch .chat-item {
+    display: block;
+    background: rgba(0, 0, 0, 0.55);
+    color: #efeff1;
+    padding: 3px 8px;
+    border-radius: 4px;
+    width: max-content;
+    max-width: 96%;
+    font-size: 14.5px;
+    line-height: 1.4;
+  }
+  body.theme-twitch .badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 15px;
+    height: 15px;
+    border-radius: 3px;
+    margin-right: 6px;
+    vertical-align: middle;
+    color: #fff;
+  }
+  body.theme-twitch .badge svg { width: 10px; height: 10px; display: block; }
+  body.theme-twitch .badge.tiktok { background: #ff0050; }
+  body.theme-twitch .badge.youtube { background: #ff0000; }
+  body.theme-twitch .username { font-weight: 700; margin-right: 4px; }
+  body.theme-twitch .username::after { content: ':'; }
+  body.theme-twitch .message { color: #efeff1; word-break: break-word; }
+  /* Warna username diputar otomatis mirip Twitch, berdasarkan hash nama */
+  body.theme-twitch .username.c0 { color: #ff7676; }
+  body.theme-twitch .username.c1 { color: #58c7ff; }
+  body.theme-twitch .username.c2 { color: #7cd992; }
+  body.theme-twitch .username.c3 { color: #ffb347; }
+  body.theme-twitch .username.c4 { color: #d68cff; }
+  body.theme-twitch .username.c5 { color: #ff8ccf; }
+  body.theme-twitch .username.c6 { color: #6ee7d8; }
+
+  /* ============ THEME: minimal (plain text, no background) ============ */
+  body.theme-minimal #chat-container { gap: 6px; }
+  body.theme-minimal .chat-item {
+    display: block;
+    color: #fff;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.9), 0 0 8px rgba(0,0,0,0.6);
+    font-size: 16px;
+    max-width: 92%;
+  }
+  body.theme-minimal .badge {
+    display: inline-flex;
+    align-items: center;
+    vertical-align: middle;
+    margin-right: 6px;
+    opacity: 0.9;
+  }
+  body.theme-minimal .badge svg { width: 13px; height: 13px; display: block; }
+  body.theme-minimal .badge.tiktok svg { fill: #ff5c93; }
+  body.theme-minimal .badge.youtube svg { fill: #ff6b6b; }
+  body.theme-minimal .username { font-weight: 700; margin-right: 4px; }
+  body.theme-minimal .username::after { content: ':'; }
+  body.theme-minimal .message { word-break: break-word; }
 </style>
 </head>
 <body>
@@ -85,6 +138,24 @@
     const MAX_VISIBLE = 15;
 
     const urlParams = new URLSearchParams(window.location.search);
+
+    // ---- Theme setup ----
+    // Pakai ?theme=default | twitch | minimal (default: "default")
+    const VALID_THEMES = ['default', 'twitch', 'minimal'];
+    const requestedTheme = (urlParams.get('theme') || 'default').toLowerCase();
+    const theme = VALID_THEMES.includes(requestedTheme) ? requestedTheme : 'default';
+    document.body.classList.add('theme-' + theme);
+
+    // ---- Fade-out setup ----
+    // Pakai ?fade=on | off (default: "on")
+    const fadeEnabled = (urlParams.get('fade') || 'on').toLowerCase() !== 'off';
+
+    // Ikon logo (SVG inline, fill pakai currentColor kecuali tema minimal)
+    const ICONS = {
+      tiktok: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.6 5.82s.51.5 0 0A4.278 4.278 0 0 1 15.54 3h-3.09v12.4a2.592 2.592 0 0 1-2.59 2.5c-1.42 0-2.6-1.16-2.6-2.6 0-1.72 1.66-3.01 3.37-2.48V9.66c-3.45-.46-6.47 2.22-6.47 5.64 0 3.33 2.76 5.7 5.69 5.7 3.14 0 5.69-2.55 5.69-5.7V9.01a7.35 7.35 0 0 0 4.3 1.38V7.3s-1.88.09-3.24-1.48z"/></svg>',
+      youtube: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.58 7.19c-.23-.86-.91-1.54-1.77-1.77C18.25 5 12 5 12 5s-6.25 0-7.81.42c-.86.23-1.54.91-1.77 1.77C2 8.75 2 12 2 12s0 3.25.42 4.81c.23.86.91 1.54 1.77 1.77C5.75 19 12 19 12 19s6.25 0 7.81-.42c.86-.23 1.54-.91 1.77-1.77C22 15.25 22 12 22 12s0-3.25-.42-4.81zM10 15V9l5.2 3-5.2 3z"/></svg>'
+    };
+
     const socket = io({
       query: {
         tiktok: urlParams.get('tiktok') || '',
@@ -108,6 +179,15 @@
       return div.innerHTML;
     }
 
+    // Hash sederhana buat milih warna username konsisten di tema twitch
+    function usernameColorClass(name) {
+      let hash = 0;
+      for (let i = 0; i < name.length; i++) {
+        hash = (hash * 31 + name.charCodeAt(i)) >>> 0;
+      }
+      return 'c' + (hash % 7);
+    }
+
     socket.on('chat-message', (data) => {
       const chatBubble = document.createElement('div');
       chatBubble.className = 'chat-item';
@@ -115,10 +195,11 @@
       const safeUsername = escapeHtml(data.username || 'Unknown');
       const safeMessage = escapeHtml(data.message || '');
       const platform = data.platform === 'youtube' ? 'youtube' : 'tiktok';
+      const usernameClass = theme === 'twitch' ? ' ' + usernameColorClass(data.username || 'Unknown') : '';
 
       chatBubble.innerHTML = `
-        <span class="badge ${platform}">${platform}</span>
-        <span class="username">${safeUsername}:</span>
+        <span class="badge ${platform}">${ICONS[platform]}</span>
+        <span class="username${usernameClass}">${safeUsername}</span>
         <span class="message">${safeMessage}</span>
       `;
       container.appendChild(chatBubble);
@@ -128,9 +209,11 @@
         if (oldest) oldest.remove();
       }
 
-      setTimeout(() => {
-        if (chatBubble.isConnected) removeBubble(chatBubble);
-      }, FADE_AFTER_MS);
+      if (fadeEnabled) {
+        setTimeout(() => {
+          if (chatBubble.isConnected) removeBubble(chatBubble);
+        }, FADE_AFTER_MS);
+      }
     });
 
     socket.on('connect_error', (err) => {

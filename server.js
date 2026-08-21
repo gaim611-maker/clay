@@ -2,12 +2,20 @@ const express = require('express');
 const http = require('http');
 const path = require('path');
 const { Server } = require('socket.io');
-const { WebcastPushConnection } = require('tiktok-live-connector');
+const { TikTokLiveConnection, WebcastEvent, SignConfig } = require('tiktok-live-connector');
 const { LiveChat } = require('youtube-chat');
 
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server, { cors: { origin: '*' } });
+
+// Euler Stream API key (free, no credit card) — daftar di https://www.eulerstream.com/register
+// Set sebagai environment variable EULER_API_KEY di Render/Koyeb (jangan hardcode langsung di sini)
+if (process.env.EULER_API_KEY) {
+  SignConfig.apiKey = process.env.EULER_API_KEY;
+} else {
+  console.warn('[TikTok] EULER_API_KEY belum di-set — koneksi TikTok mungkin gagal karena rate limit sign server publik.');
+}
 
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -65,9 +73,7 @@ io.on('connection', (socket) => {
   function connectTikTok() {
     if (closed || !tiktok) return;
 
-    tiktokConn = new WebcastPushConnection(tiktok, {
-      enableExtendedGiftInfo: false,
-    });
+    tiktokConn = new TikTokLiveConnection(tiktok, {});
 
     tiktokConn.connect()
       .then(() => {
@@ -79,16 +85,16 @@ io.on('connection', (socket) => {
         scheduleTikTokReconnect();
       });
 
-    tiktokConn.on('chat', (data) => {
-      emitChat('tiktok', data.nickname || data.uniqueId, data.comment);
+    tiktokConn.on(WebcastEvent.CHAT, (data) => {
+      emitChat('tiktok', data.user?.nickname || data.user?.uniqueId, data.comment);
     });
 
-    tiktokConn.on('disconnected', () => {
+    tiktokConn.on(WebcastEvent.DISCONNECTED, () => {
       console.warn('[TikTok] Disconnected');
       scheduleTikTokReconnect();
     });
 
-    tiktokConn.on('streamEnd', () => {
+    tiktokConn.on(WebcastEvent.STREAM_END, () => {
       console.warn('[TikTok] Stream ended by host');
     });
   }
