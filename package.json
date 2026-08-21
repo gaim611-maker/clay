@@ -1,0 +1,18 @@
+{
+  "name": "dual-platform-chat-overlay",
+  "version": "1.0.0",
+  "description": "Cloud-based TikTok Live & YouTube Live chat overlay untuk Browser Source streaming IRL",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "socket.io": "^4.7.5",
+    "tiktok-live-connector": "^1.2.11",
+    "youtube-chat": "^2.2.2"
+  }
+}
